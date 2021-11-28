@@ -1,7 +1,7 @@
 #ifndef INC_MMR_CAN_INCLUDES_H_
 #define INC_MMR_CAN_INCLUDES_H_
 
-#include "stm32f3xx_hal.h"
+#include "main.h"
 
 #ifndef CAN
 #define CAN
