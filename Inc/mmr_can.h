@@ -7,8 +7,9 @@
 #include "mmr_can_types.h"
 #include "mmr_can_optimize.h"
 
+#ifndef MMR_CAN_RX_FIFO
 #define MMR_CAN_RX_FIFO CAN_RX_FIFO0
-
+#endif
 
 #if MMR_CAN_RX_FIFO == CAN_RX_FIFO0
 #define MMR_CAN_RX_INTERRUPT CAN_IT_RX_FIFO0_MSG_PENDING
@@ -16,8 +17,13 @@
 #define MMR_CAN_RX_INTERRUPT CAN_IT_RX_FIFO1_MSG_PENDING
 #endif
 
+#ifndef MMR_CAN_ID
 #define MMR_CAN_ID 0x103
+#endif
+
+#ifndef MMR_CAN_BUFFER_LEN
 #define MMR_CAN_BUFFER_LEN 8
+#endif
 
 typedef uint8_t CanRxBuffer[MMR_CAN_BUFFER_LEN];
 
