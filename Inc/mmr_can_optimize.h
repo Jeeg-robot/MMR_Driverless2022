@@ -7,4 +7,4 @@
 #define always_inline inline
 #endif
 
-#endif /* INC_OPTIMIZE_H_ */
+#endif /* INC_MMR_CAN_OPTIMIZE_H_ */

@@ -11,4 +11,4 @@ size_t stringBufferLength(uint8_t *buffer, size_t maxLen) {
   return strnlen((const char*)buffer, maxLen);
 }
 
-#endif /* INC_UTIL_H_ */
+#endif /* INC_MMR_CAN_UTIL_H_ */
