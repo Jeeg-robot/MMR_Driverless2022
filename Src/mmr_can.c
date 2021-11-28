@@ -40,7 +40,7 @@ HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
     .IDE = CAN_ID_STD,
     .RTR = CAN_RTR_DATA,
     .DLC = packet.length,
-    .StdId = packet.slaveId,
+    .StdId = packet.remoteId,
     .TransmitGlobalTime = DISABLE,
   };
 
