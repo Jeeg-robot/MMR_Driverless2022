@@ -36,7 +36,7 @@ MmrCanFilterSettings MMR_CAN_GetDefaultFilterSettings() {
 
 
 HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
-  CAN_TxHeaderTypeDef header = {
+  CanTxHeader header = {
     .IDE = CAN_ID_STD,
     .RTR = CAN_RTR_DATA,
     .DLC = packet.length,
@@ -49,7 +49,7 @@ HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
 
 
 static void __handleCanRxInterrupt(CAN_HandleTypeDef *hcan) {
-  static CAN_RxHeaderTypeDef rxHeader = {};
+  static CanRxHeader rxHeader = {};
   static CanRxBuffer rxData = {};
 
   HAL_CAN_GetRxMessage(hcan, MMR_CAN_RX_FIFO, &rxHeader, rxData);

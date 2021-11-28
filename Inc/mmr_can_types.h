@@ -33,5 +33,7 @@ typedef uint8_t CanFilterBank;
 
 typedef HAL_StatusTypeDef HalStatus;
 typedef CAN_HandleTypeDef CanHandle;
+typedef CAN_TxHeaderTypeDef CanTxHeader;
+typedef CAN_RxHeaderTypeDef CanRxHeader;
 
-#endif /* INC_MMR_TYPES_H_ */
+#endif /* INC_MMR_CAN_TYPES_H_ */
