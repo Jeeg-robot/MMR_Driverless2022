@@ -2,7 +2,7 @@
 #define INC_MMR_CAN_TYPES_H_
 
 #include <stdint.h>
-#include "mmr_can_incudes.h"
+#include "mmr_can_includes.h"
 
 typedef uint32_t CanId;
 typedef uint32_t CanMailbox;
