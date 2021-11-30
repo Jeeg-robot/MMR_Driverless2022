@@ -27,7 +27,7 @@ CanFilterMask MMR_CAN_AlignStandardMask(CanFilterMask baseMask) {
 MmrCanFilterSettings MMR_CAN_GetDefaultFilterSettings() {
   return (MmrCanFilterSettings) {
     .enabled = true,
-    .fifo = MMR_CAN_RX_FIFO,
+    .fifo = MMR_CAN_FILTER_FIFO,
     .idMask = 0,
     .bank = 0,
     .slaveBankStart = 14,
@@ -46,21 +46,3 @@ HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
 
   return HAL_CAN_AddTxMessage(hcan, &header, packet.data, packet.mailbox);
 }
-
-
-static void __handleCanRxInterrupt(CAN_HandleTypeDef *hcan) {
-  static CanRxHeader rxHeader = {};
-  static CanRxBuffer rxData = {};
-
-  HAL_CAN_GetRxMessage(hcan, MMR_CAN_RX_FIFO, &rxHeader, rxData);
-}
-
-#if MMR_CAN_RX_FIFO == CAN_RX_FIFO0
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-  __handleCanRxInterrupt(hcan);
-}
-#elif MMR_CAN_RX_FIFO == CAN_RX_FIFO1
-void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-  __handleCanRxInterrupt(hcan);
-}
-#endif
