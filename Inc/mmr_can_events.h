@@ -5,18 +5,18 @@
 
 typedef struct {
   CanId senderId;
-  CanRxBuffer message;
+  uint8_t *message;
 } MmrCanEvent;
 
 typedef void (*MmrCanEventHandler)(MmrCanEvent *event);
 
 typedef struct {
-  MmrCanEventHandler *events;
-  size_t count;
+  const MmrCanEventHandler *handlers;
+  const size_t count;
 } MmrCanEventList;
 
 
-void MMR_CAN_InitRxHandlers(MmrCanEventList *rxHandlers);
+void MMR_CAN_InitRxHandlers(const MmrCanEventList *rxEvents);
 
 
 #endif /* INC_MMR_CAN_EVENTS_H_ */

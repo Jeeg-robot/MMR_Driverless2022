@@ -2,17 +2,16 @@
 #include "mmr_can_events.h"
 
 
-static MmrCanEventList *_rxHandlers = NULL;
-static MmrCanEventList *_txHandlers = NULL;
+static const MmrCanEventList *_rxEvents = NULL;
 
 
 static void __handleCanRxInterrupt(CanHandle *hcan);
-static void __invokeAll(MmrCanEventList *list, MmrCanEvent *event);
-static void __maybeInvoke(MmrCanEventHandler handler, MmrCanEvent *event);
+static void __invokeAll(const MmrCanEventList *events, MmrCanEvent *event);
+static void __maybeInvoke(const MmrCanEventHandler handler, MmrCanEvent *event);
 
 
-void MMR_CAN_InitRxHandlers(MmrCanEventList *rxHandlers) {
-  _rxHandlers = rxHandlers;
+void MMR_CAN_InitRxHandlers(const MmrCanEventList *rxEvents) {
+  _rxEvents = rxEvents;
 }
 
 
@@ -24,24 +23,24 @@ static void __handleCanRxInterrupt(CanHandle *hcan) {
 
   MmrCanEvent event = {
     .senderId = 0,
-    .message = message,
+    .message = rxData,
   };
 
-  __invokeAll(_rxHandlers, &event);
+  __invokeAll(_rxEvents, &event);
 }
 
-static void __invokeAll(MmrCanEventList *list, MmrCanEvent *event) {
-  if (!list) {
+static void __invokeAll(const MmrCanEventList *events, MmrCanEvent *event) {
+  if (!events) {
     return;
   }
 
   short i;
-  for (i = 0; i < list->count; i++) {
-    __maybeInvoke(list->events[i], event);
+  for (i = 0; i < events->count; i++) {
+    __maybeInvoke(events->handlers[i], event);
   }
 }
 
-static always_inline void __maybeInvoke(MmrCanEventHandler handler, MmrCanEvent *event) {
+static always_inline void __maybeInvoke(const MmrCanEventHandler handler, MmrCanEvent *event) {
   if (handler) {
     handler(event);
   }
