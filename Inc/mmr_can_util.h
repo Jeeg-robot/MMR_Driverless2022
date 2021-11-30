@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <string.h>
 
+#define arrayLength(array) \
+  (sizeof(array) / sizeof(*(array)))
+
 #define stringArrayLength(array) \
   stringBufferLength((array), sizeof(array))
 

@@ -46,21 +46,3 @@ HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
 
   return HAL_CAN_AddTxMessage(hcan, &header, packet.data, packet.mailbox);
 }
-
-
-static void __handleCanRxInterrupt(CAN_HandleTypeDef *hcan) {
-  static CAN_RxHeaderTypeDef rxHeader = {};
-  static CanRxBuffer rxData = {};
-
-  HAL_CAN_GetRxMessage(hcan, MMR_CAN_RX_FIFO, &rxHeader, rxData);
-}
-
-#if MMR_CAN_RX_FIFO == CAN_RX_FIFO0
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-  __handleCanRxInterrupt(hcan);
-}
-#elif MMR_CAN_RX_FIFO == CAN_RX_FIFO1
-void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-  __handleCanRxInterrupt(hcan);
-}
-#endif
