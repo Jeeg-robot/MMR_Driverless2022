@@ -22,7 +22,7 @@ static void __handleCanRxInterrupt(CanHandle *hcan) {
   HAL_CAN_GetRxMessage(hcan, MMR_CAN_RX_FIFO, &rxHeader, rxData);
 
   MmrCanEvent event = {
-    .senderId = 0,
+    .senderId = rxHeader->StdId,
     .message = rxData,
   };
 
