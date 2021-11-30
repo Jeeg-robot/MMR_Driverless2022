@@ -2,7 +2,7 @@
 #include "mmr_can_events.h"
 
 
-static const MmrCanEventList *_rxEvents = NULL;
+static const MmrCanEventList _rxEvents = {};
 
 
 static void __handleCanRxInterrupt(CanHandle *hcan);
@@ -10,8 +10,9 @@ static void __invokeAll(const MmrCanEventList *events, MmrCanEvent *event);
 static void __maybeInvoke(const MmrCanEventHandler handler, MmrCanEvent *event);
 
 
-void MMR_CAN_InitRxHandlers(const MmrCanEventList *rxEvents) {
-  _rxEvents = rxEvents;
+void MMR_CAN_InitRxHandlers(const MmrCanEventHandler *rxHandlers, size_t count) {
+  _rxEvents.handlers = rxHandlers;
+  _rxEvents.count = count;
 }
 
 
@@ -26,7 +27,7 @@ static void __handleCanRxInterrupt(CanHandle *hcan) {
     .message = rxData,
   };
 
-  __invokeAll(_rxEvents, &event);
+  __invokeAll(&_rxEvents, &event);
 }
 
 static void __invokeAll(const MmrCanEventList *events, MmrCanEvent *event) {
