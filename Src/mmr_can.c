@@ -35,7 +35,7 @@ CanFilterMask MMR_CAN_AlignStandardMask(CanFilterMask baseMask) {
 MmrCanFilterSettings MMR_CAN_GetDefaultFilterSettings() {
   return (MmrCanFilterSettings) {
     .enabled = true,
-    .fifo = MMR_CAN_RX_FIFO,
+    .fifo = MMR_CAN_FILTER_FIFO,
     .idMask = 0,
     .bank = 0,
     .slaveBankStart = 14,
