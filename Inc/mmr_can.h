@@ -71,6 +71,8 @@ typedef struct {
 } MmrCanPacket;
 
 
+HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan);
+
 #define MMR_CAN_FilterConfigDefault(phcan) \
   MMR_CAN_FilterConfig(phcan, MMR_CAN_GetDefaultFilterSettings())
 
