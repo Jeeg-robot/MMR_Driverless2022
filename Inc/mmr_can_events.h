@@ -3,12 +3,7 @@
 
 #include "mmr_can.h"
 
-typedef struct {
-  CanId senderId;
-  uint8_t *message;
-} MmrCanEvent;
-
-typedef void (*MmrCanEventHandler)(MmrCanEvent *event);
+typedef void (*MmrCanEventHandler)(const MmrCanMessage *event);
 
 typedef struct {
   const MmrCanEventHandler *handlers;

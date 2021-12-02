@@ -77,6 +77,12 @@ typedef struct {
 } MmrCanPacket;
 
 
+typedef struct {
+  CanId senderId;
+  uint8_t *data;
+} MmrCanMessage;
+
+
 HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan);
 
 #define MMR_CAN_FilterConfigDefault(phcan) \
@@ -87,5 +93,6 @@ CanFilterMask MMR_CAN_AlignStandardMask(CanFilterMask baseMask);
 MmrCanFilterSettings MMR_CAN_GetDefaultFilterSettings();
 
 HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet);
+HalStatus MMR_CAN_Receive(CanHandle *hcan, MmrCanMessage *result);
 
 #endif /* INC_MMR_CAN_H_ */
