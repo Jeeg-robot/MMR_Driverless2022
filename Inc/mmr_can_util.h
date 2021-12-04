@@ -8,10 +8,9 @@
   (sizeof(array) / sizeof(*(array)))
 
 #define stringArrayLength(array) \
-  stringBufferLength((array), sizeof(array))
+  stringBufferLength((array), arrayLength(array))
 
-size_t stringBufferLength(uint8_t *buffer, size_t maxLen) {
-  return strnlen((const char*)buffer, maxLen);
-}
+#define stringBufferLength(pbuffer, maxLen) \
+  strnlen((const char*)(pbuffer), maxLen)
 
 #endif /* INC_MMR_CAN_UTIL_H_ */
