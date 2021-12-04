@@ -64,3 +64,4 @@ HalStatus MMR_CAN_Receive(CanHandle *hcan, MmrCanMessage *result) {
   result->data = rxData;
   return status;
 }
+
