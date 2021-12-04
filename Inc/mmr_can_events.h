@@ -2,6 +2,7 @@
 #define INC_MMR_CAN_EVENTS_H_
 
 #include "mmr_can.h"
+#include "mmr_can_util.h"
 
 typedef void (*MmrCanEventHandler)(const MmrCanMessage *event);
 
@@ -10,6 +11,8 @@ typedef struct {
   const size_t count;
 } MmrCanEventList;
 
+#define MMR_CAN_CreateEventList(handlers) \
+  (const MmrCanEventList) { handlers, arrayLength(handlers) }
 
 HalStatus MMR_CAN_InitRxHandlers(CanHandle *hcan, const MmrCanEventList *rxEvents);
 
