@@ -3,7 +3,6 @@
 HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan) {
   return
     MMR_CAN_FilterConfigDefault(hcan) |
-    HAL_CAN_ActivateNotification(hcan, MMR_CAN_RX_INTERRUPT) |
     HAL_CAN_Start(hcan)
     ;
 }
