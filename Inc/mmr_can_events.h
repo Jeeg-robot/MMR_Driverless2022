@@ -11,7 +11,7 @@ typedef struct {
 } MmrCanEventList;
 
 
-void MMR_CAN_InitRxHandlers(const MmrCanEventList *rxEvents);
+HalStatus MMR_CAN_InitRxHandlers(CanHandle *hcan, const MmrCanEventList *rxEvents);
 
 
 #endif /* INC_MMR_CAN_EVENTS_H_ */

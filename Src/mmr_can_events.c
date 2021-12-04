@@ -10,8 +10,9 @@ static void __invokeAll(const MmrCanEventList *events, const MmrCanMessage *even
 static void __maybeInvoke(const MmrCanEventHandler handler, const MmrCanMessage *event);
 
 
-void MMR_CAN_InitRxHandlers(const MmrCanEventList *rxEvents) {
+HalStatus MMR_CAN_InitRxHandlers(CanHandle *hcan, const MmrCanEventList *rxEvents) {
   _rxEvents = rxEvents;
+  return HAL_CAN_ActivateNotification(hcan, MMR_CAN_RX_INTERRUPT);
 }
 
 
