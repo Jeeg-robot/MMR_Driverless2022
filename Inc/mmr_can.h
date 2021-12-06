@@ -27,11 +27,11 @@
 #define MMR_CAN_ID 0x103
 #endif
 
-#ifndef MMR_CAN_BUFFER_LEN
-#define MMR_CAN_BUFFER_LEN 8
+#ifndef MMR_CAN_MAX_DATA_LENGTH
+#define MMR_CAN_MAX_DATA_LENGTH 8
 #endif
 
-typedef uint8_t CanRxBuffer[MMR_CAN_BUFFER_LEN];
+typedef uint8_t CanRxBuffer[MMR_CAN_MAX_DATA_LENGTH];
 
 
 typedef struct {
@@ -77,9 +77,17 @@ typedef struct {
 } MmrCanPacket;
 
 
+#define MMR_CAN_IsMultiFrame(rxHeader) \
+  ((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME)
+
+typedef enum {
+  MMR_CAN_MESSAGE_TYPE_MULTI_FRAME = 1,
+  MMR_CAN_MESSAGE_TYPE_NORMAL = 2,
+} MmrCanMessageType;
+
 typedef struct {
   CanId senderId;
-  uint8_t *data;
+  void *store;
 } MmrCanMessage;
 
 

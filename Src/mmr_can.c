@@ -39,29 +39,3 @@ MmrCanFilterSettings MMR_CAN_GetDefaultFilterSettings() {
     .slaveBankStart = 14,
   };
 }
-
-
-HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
-  CanTxHeader header = {
-    .IDE = CAN_ID_STD,
-    .RTR = CAN_RTR_DATA,
-    .DLC = packet.length,
-    .StdId = packet.remoteId,
-    .TransmitGlobalTime = DISABLE,
-  };
-
-  return HAL_CAN_AddTxMessage(hcan, &header, packet.data, packet.mailbox);
-}
-
-HalStatus MMR_CAN_Receive(CanHandle *hcan, MmrCanMessage *result) {
-  CanRxHeader rxHeader = {};
-  CanRxBuffer rxData = {};
-
-  HalStatus status =
-    HAL_CAN_GetRxMessage(hcan, MMR_CAN_RX_FIFO, &rxHeader, rxData);
-
-  result->senderId = rxHeader.StdId;
-  result->data = rxData;
-  return status;
-}
-

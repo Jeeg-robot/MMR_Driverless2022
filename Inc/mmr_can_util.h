@@ -13,4 +13,7 @@
 #define stringBufferLength(pbuffer, maxLen) \
   strnlen((const char*)(pbuffer), maxLen)
 
+#define min(a, b) ((a) < (b) ? a : b);
+
+
 #endif /* INC_MMR_CAN_UTIL_H_ */
