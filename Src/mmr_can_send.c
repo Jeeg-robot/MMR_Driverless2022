@@ -5,7 +5,7 @@
 static HalStatus sendNormal(CanHandle *hcan, CanTxHeader *header, MmrCanPacket *packet);
 static HalStatus sendMulti(CanHandle *hcan, CanTxHeader *header, MmrCanPacket *packet);
 static uint8_t computeFramesToSend(uint8_t length);
-static uint8_t computeLengthForNextMessage(uint8_t totalLength, uint8_t offset);
+static uint8_t computeNextMessageLength(uint8_t totalLength, uint8_t offset);
 
 
 HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
@@ -46,7 +46,7 @@ static HalStatus sendMulti(
   header->StdId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME;
   do {
     uint8_t *dataStart = packet->data + offset;
-    uint8_t length = computeLengthForNextMessage(packet->length, offset);
+    uint8_t length = computeNextMessageLength(packet->length, offset);
 
     header->DLC = length;
     offset += length;
@@ -67,6 +67,6 @@ static uint8_t computeFramesToSend(uint8_t length) {
   return framesToSend + maybeOneForRemainder;
 }
 
-static uint8_t computeLengthForNextMessage(uint8_t totalLength, uint8_t offset) {
+static uint8_t computeNextMessageLength(uint8_t totalLength, uint8_t offset) {
   return min(totalLength - offset, MMR_CAN_MAX_DATA_LENGTH);
 }
