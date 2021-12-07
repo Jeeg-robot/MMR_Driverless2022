@@ -17,9 +17,12 @@ HalStatus MMR_CAN_InitRxHandlers(CanHandle *hcan, const MmrCanEventList *rxEvent
 
 
 static void __handleCanRxInterrupt(CanHandle *hcan) {
-  static MmrCanMessage event = {};
-  MMR_CAN_Receive(hcan, &event);
+  static CanRxBuffer buffer = {};
+  static MmrCanMessage event = {
+    .store = buffer,
+  };
 
+  MMR_CAN_Receive(hcan, &event);
   __invokeAll(_rxEvents, &event);
 }
 
