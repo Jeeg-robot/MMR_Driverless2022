@@ -49,9 +49,7 @@ static HalStatus sendMulti(
     status |=
       sendSingleMultiFrame(hcan, header, packet, &offset);
   }
-  while (
-    framesToSend --> 1 && status == HAL_OK
-  );
+  while (framesToSend-- > 1 && status == HAL_OK);
 
   return status;
 }
