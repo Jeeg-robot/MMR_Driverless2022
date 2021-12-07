@@ -4,7 +4,7 @@
 
 static HalStatus sendNormal(CanHandle *hcan, CanTxHeader *header, MmrCanPacket *packet);
 static HalStatus sendMulti(CanHandle *hcan, CanTxHeader *header, MmrCanPacket *packet);
-static HalStatus sendSingleMultiFrame(CanHandle *hcan, CanTxHeader *header, MmrCanPacket *packet);
+static HalStatus sendSingleMultiFrame(CanHandle *hcan, CanTxHeader *header, MmrCanPacket *packet, uint8_t *offset);
 static uint8_t computeFramesToSend(MmrCanPacket *packet);
 static uint8_t computeNextMessageLength(MmrCanPacket *packet, uint8_t offset);
 
@@ -63,7 +63,7 @@ static HalStatus sendSingleMultiFrame(
   MmrCanPacket *packet,
   uint8_t *offset
 ) {
-  uint8_t *dataStart = packet->data + offset;
+  uint8_t *dataStart = packet->data + (*offset);
   uint8_t length = computeNextMessageLength(packet, *offset);
 
   header->DLC = length;
