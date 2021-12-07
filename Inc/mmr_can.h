@@ -78,7 +78,7 @@ typedef struct {
 
 
 #define MMR_CAN_IsMultiFrame(rxHeader) \
-  ((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME)
+  ((bool)((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME))
 
 typedef enum {
   MMR_CAN_MESSAGE_TYPE_MULTI_FRAME = 1,
