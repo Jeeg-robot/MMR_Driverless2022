@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "mmr_can.h"
 #include "mmr_can_util.h"
 
@@ -46,6 +47,11 @@ static HalStatus sendMulti(
 
   header->StdId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME;
   do {
+    bool isLastFrame = framesToSend <= 1;
+    if (isLastFrame) {
+      header->StdId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END;
+    }
+
     status |=
       sendSingleMultiFrame(hcan, header, packet, &offset);
   }

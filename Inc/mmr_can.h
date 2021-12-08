@@ -80,9 +80,14 @@ typedef struct {
 #define MMR_CAN_IsMultiFrame(rxHeader) \
   ((bool)((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME))
 
+#define MMR_CAN_IsMultiFrameEnd(rxHeader) \
+  ((bool)((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END))
+
+
 typedef enum {
-  MMR_CAN_MESSAGE_TYPE_MULTI_FRAME = 1,
-  MMR_CAN_MESSAGE_TYPE_NORMAL = 2,
+  MMR_CAN_MESSAGE_TYPE_MULTI_FRAME = B_(0010),
+  MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END = B_(0011),
+  MMR_CAN_MESSAGE_TYPE_NORMAL = B_(1000),
 } MmrCanMessageType;
 
 typedef struct {
