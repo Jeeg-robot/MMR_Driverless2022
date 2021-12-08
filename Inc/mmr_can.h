@@ -6,6 +6,7 @@
 #include "mmr_can_includes.h"
 #include "mmr_can_types.h"
 #include "mmr_can_optimize.h"
+#include "mmr_can_binary_literals.h"
 
 #ifndef MMR_CAN_RX_FIFO
 #define MMR_CAN_RX_FIFO CAN_RX_FIFO0
@@ -47,7 +48,10 @@ typedef struct {
    * The filter bank to use
    *
    * In systems with more than one CAN interface,
-   * this must go from 0 to slaveBankStart.
+   * this must go from 0 to slaveBankStart for the master CAN
+   * and from slaveBankStart to 27 for the slave CAN
+   * 
+   * Master CAN is usually CAN1, while slave CAN is CAN2
    */
   CanFilterBank bank;
 
@@ -63,13 +67,8 @@ typedef struct {
   CanFilterMask idMask;
 } MmrCanFilterSettings;
 
+
 typedef struct {
-  /**
-   * The id of the CAN interface that will receive the packet.
-   *
-   * If you are using the CANbus in loopback mode, it can be the
-   * id that the sender is using.
-   */
   CanId remoteId;
   CanMailbox *mailbox;
   uint8_t *data;
@@ -84,12 +83,28 @@ typedef struct {
   ((bool)((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END))
 
 
+/**
+ * @brief
+ * These values can be appended to the extended-id
+ * portion of the CAN bus message (that is, the lower 5 bits
+ * of the standard id)
+ * 
+ * They are used to check if a message is either standalone
+ * or split into multiple frames
+ * 
+ * Multi-frame messages have a higher priority over normal ones
+ */
 typedef enum {
   MMR_CAN_MESSAGE_TYPE_MULTI_FRAME = B_(0010),
   MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END = B_(0011),
   MMR_CAN_MESSAGE_TYPE_NORMAL = B_(1000),
 } MmrCanMessageType;
 
+
+/**
+ * @brief
+ * Represents a CAN message
+ */
 typedef struct {
   CanId senderId;
   void *store;

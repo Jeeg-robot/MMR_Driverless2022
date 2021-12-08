@@ -77,16 +77,54 @@ static HalStatus sendSingleMultiFrame(
 }
 
 
+/**
+ * @brief 
+ * Computes the frames that will need to be sent for a packet.
+ * 
+ * For example, if a packet has 15 bytes, the function will return
+ * 2, as one packet is needed for the first 8 bytes and another is
+ * needed for the remaining 7.
+ * 
+ * @example
+ * The computation is pretty simple
+ * Given
+ *               length = 17 (bytes)
+ * We'll have
+ *         framesToSend = 17 / 8 = 2 (frames)
+ *            remainder = 17 % 8 = 1 (bytes)
+ * maybeOneForRemainder = 1 > 0  = 1 (frame)
+ * -------------------------------------------
+ *               result = 2 + 1  = 3 (frames) 
+ */
 static uint8_t computeFramesToSend(MmrCanPacket *packet) {
   uint8_t length = packet->length;
   uint8_t framesToSend = length / MMR_CAN_MAX_DATA_LENGTH;
-  uint8_t maybeOneForRemainder = length % MMR_CAN_MAX_DATA_LENGTH > 0;
+  uint8_t remainder = length % MMR_CAN_MAX_DATA_LENGTH;
+  uint8_t maybeOneForRemainder = remainder > 0;
 
   return framesToSend + maybeOneForRemainder;
 }
 
+
+/**
+ * @brief 
+ * Returns the length for the next message, either
+ * 8 bytes or a lower value, keeping the offset into count.
+ * 
+ * @example
+ * Given
+ *  - a 17 bytes packet
+ *  - an offset starting at 0 and supposedly incrementing
+ *    of 8 after each call
+ * 
+ * Three subsequent calls to this function will return
+ *  First call  -> min(17 - 0, 8)  = min(17, 8) = 8 (bytes)
+ *  Second call -> min(17 - 8, 8)  = min(9, 8)  = 8 (bytes)
+ *  Third call  -> min(17 - 16, 8) = min(1, 8)  = 1 (byte)
+ */
 static uint8_t computeNextMessageLength(MmrCanPacket *packet, uint8_t offset) {
+  uint8_t remainingBytes = packet->length - offset;
   return min(
-    packet->length - offset, MMR_CAN_MAX_DATA_LENGTH
+    remainingBytes, MMR_CAN_MAX_DATA_LENGTH
   );
 }
