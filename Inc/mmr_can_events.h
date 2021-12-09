@@ -12,7 +12,7 @@ typedef struct {
 } MmrCanEventList;
 
 #define MMR_CAN_CreateEventList(handlers) \
-  (const MmrCanEventList) { handlers, arrayLength(handlers) }
+  (const MmrCanEventList) { handlers, sizeofarray(handlers) }
 
 HalStatus MMR_CAN_InitRxHandlers(CanHandle *hcan, const MmrCanEventList *rxEvents);
 

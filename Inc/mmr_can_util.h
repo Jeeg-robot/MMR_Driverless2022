@@ -4,16 +4,17 @@
 #include <stdint.h>
 #include <string.h>
 
-#define arrayLength(array) \
+#define sizeofarray(array) \
   (sizeof(array) / sizeof(*(array)))
 
 #define stringArrayLength(array) \
-  stringBufferLength((array), arrayLength(array))
+  stringBufferLength((array), sizeofarray(array))
 
 #define stringBufferLength(pbuffer, maxLen) \
   strnlen((const char*)(pbuffer), maxLen)
 
 #define min(a, b) ((a) < (b) ? a : b);
+#define mask(value, bits) (value & bits)
 
 
 #endif /* INC_MMR_CAN_UTIL_H_ */
