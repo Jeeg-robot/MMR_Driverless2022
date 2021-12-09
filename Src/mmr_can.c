@@ -1,9 +1,7 @@
 #include "mmr_can.h"
 #include "mmr_can_util.h"
 
-
 static uint8_t maskIdLower5Bits(CanRxHeader *header);
-
 
 
 HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan) {
@@ -15,7 +13,7 @@ HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan) {
 
 
 HalStatus MMR_CAN_FilterConfig(CanHandle *hcan, MmrCanFilterSettings settings) {
-  CAN_FilterTypeDef filter = {
+  CanFilter filter = {
     .FilterActivation = settings.enabled
       ? CAN_FILTER_ENABLE
       : CAN_FILTER_DISABLE,
