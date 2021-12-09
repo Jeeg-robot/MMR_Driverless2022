@@ -53,7 +53,7 @@ bool MMR_CAN_IsMultiFrame(CanRxHeader *header) {
 }
 
 bool MMR_CAN_IsMultiFrameEnd(CanRxHeader *header) {
-  return maskIdLower5Bits(header) == MMR_CAN_MESSAGE_TYPE_MULTI_FRAME
+  return maskIdLower5Bits(header) == MMR_CAN_MESSAGE_TYPE_MULTI_FRAME;
 }
 
 static always_inline uint8_t maskIdLower5Bits(CanRxHeader *header) {
