@@ -24,10 +24,6 @@
 #define MMR_CAN_RX_INTERRUPT CAN_IT_RX_FIFO1_MSG_PENDING
 #endif
 
-#ifndef MMR_CAN_ID
-#define MMR_CAN_ID 0x103
-#endif
-
 #ifndef MMR_CAN_MAX_DATA_LENGTH
 #define MMR_CAN_MAX_DATA_LENGTH 8
 #endif
@@ -76,13 +72,6 @@ typedef struct {
 } MmrCanPacket;
 
 
-#define MMR_CAN_IsMultiFrame(rxHeader) \
-  ((bool)((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME))
-
-#define MMR_CAN_IsMultiFrameEnd(rxHeader) \
-  ((bool)((rxHeader).StdId & MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END))
-
-
 /**
  * @brief
  * These values can be appended to the extended-id
@@ -111,16 +100,20 @@ typedef struct {
 } MmrCanMessage;
 
 
-HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan);
-
 #define MMR_CAN_FilterConfigDefault(phcan) \
   MMR_CAN_FilterConfig(phcan, MMR_CAN_GetDefaultFilterSettings())
 
+
+HalStatus MMR_CAN_BasicSetupAndStart(CanHandle *hcan);
 HalStatus MMR_CAN_FilterConfig(CanHandle *hcan, MmrCanFilterSettings settings);
 CanFilterMask MMR_CAN_AlignStandardMask(CanFilterMask baseMask);
 MmrCanFilterSettings MMR_CAN_GetDefaultFilterSettings();
 
 HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet);
 HalStatus MMR_CAN_Receive(CanHandle *hcan, MmrCanMessage *result);
+
+
+bool MMR_CAN_IsMultiFrame(CanRxHeader *header);
+bool MMR_CAN_IsMultiFrameEnd(CanRxHeader *header);
 
 #endif /* INC_MMR_CAN_H_ */
