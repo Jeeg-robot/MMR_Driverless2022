@@ -11,7 +11,7 @@ HalStatus MMR_CAN_Receive(CanHandle *hcan, MmrCanMessage *result) {
   uint8_t *dest = result->store;
   HalStatus status = receiveOne(hcan, &header, dest);
 
-  result->senderId = header.StdId;
+  result->senderId = header.ExtId;
   if (MMR_CAN_IsMultiFrame(&header)) {
     status |= receiveAll(hcan, &header, dest);
   }
@@ -33,7 +33,7 @@ static HalStatus receiveAll(
   CanRxHeader *header,
   uint8_t *result
 ) {
-  CanId targetId = header->StdId;
+  CanId targetId = header->ExtId;
   HalStatus status = HAL_OK;
   do {
     result += MMR_CAN_MAX_DATA_LENGTH;
@@ -50,6 +50,5 @@ static bool headerIsMultiFrame(CanRxHeader *header, CanId targetId) {
   return
     MMR_CAN_IsMultiFrame(header) &&
     !MMR_CAN_IsMultiFrameEnd(header) &&
-    header->DLC >= MMR_CAN_MAX_DATA_LENGTH &&
-    header->StdId == targetId;
+    header->DLC >= MMR_CAN_MAX_DATA_LENGTH;
 }

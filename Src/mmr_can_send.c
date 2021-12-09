@@ -12,10 +12,10 @@ static uint8_t computeNextMessageLength(MmrCanPacket *packet, uint8_t offset);
 
 HalStatus MMR_CAN_Send(CanHandle *hcan, MmrCanPacket packet) {
   CanTxHeader header = {
-    .IDE = CAN_ID_STD,
+    .IDE = CAN_ID_EXT,
     .RTR = CAN_RTR_DATA,
     .DLC = packet.length,
-    .StdId = packet.remoteId,
+    .ExtId = packet.remoteId << 5,
     .TransmitGlobalTime = DISABLE,
   };
 
@@ -30,7 +30,7 @@ static HalStatus sendNormal(
   CanTxHeader *header,
   MmrCanPacket *packet
 ) {
-  header->StdId |= MMR_CAN_MESSAGE_TYPE_NORMAL;
+  header->ExtId |= MMR_CAN_MESSAGE_TYPE_NORMAL;
   return
     HAL_CAN_AddTxMessage(hcan, header, packet->data, packet->mailbox);
 }
@@ -45,11 +45,11 @@ static HalStatus sendMulti(
   uint8_t offset = 0;
   uint8_t framesToSend = computeFramesToSend(packet);
 
-  header->StdId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME;
+  header->ExtId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME;
   do {
     bool isLastFrame = framesToSend <= 1;
     if (isLastFrame) {
-      header->StdId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END;
+      header->ExtId |= MMR_CAN_MESSAGE_TYPE_MULTI_FRAME_END;
     }
 
     status |=

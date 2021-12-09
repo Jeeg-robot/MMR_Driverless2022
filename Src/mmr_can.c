@@ -57,5 +57,5 @@ bool MMR_CAN_IsMultiFrameEnd(CanRxHeader *header) {
 }
 
 static always_inline uint8_t maskIdLower5Bits(CanRxHeader *header) {
-  return mask(header->StdId, B8_(0001, 1111));
+  return mask(header->ExtId, B8_(0001, 1111));
 }
